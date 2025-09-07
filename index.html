@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Digital Nabha</title>
+  <style>
+    :root {
+      --blue:#1976d2; --green:#388e3c; --bg:#f5f7fa; --card:#fff; --text:#000;
+    }
+    body {margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);}
+    header {background:var(--blue);color:#fff;padding:.8rem 1rem;
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;}
+    header h1{margin:0;font-size:1.4rem;} header .sub{font-size:.9rem;opacity:.9;}
+    #langTop,#themeToggle{padding:.3rem;border:none;border-radius:4px;margin-left:.5rem;}
+    main{padding:1rem;} h2{color:var(--blue);}
+    .hidden{display:none;}
+    .controls{margin:1rem 0;text-align:center;}
+    select,button,input{padding:.6rem 1rem;margin:.3rem;border:none;border-radius:6px;font-size:1rem;}
+    button.primary{background:var(--green);color:#fff;cursor:pointer;}
+    button.ghost{background:#fff;color:var(--blue);border:1px solid var(--blue);cursor:pointer;}
+    .grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));}
+    .card{background:var(--card);border-radius:12px;padding:1rem;text-align:center;
+      box-shadow:0 2px 5px rgba(0,0,0,.1);cursor:pointer;transition:.3s;}
+    .card:hover{transform:scale(1.05);}
+    .tabs{display:flex;gap:.5rem;margin:1rem 0;}
+    .tab{flex:1;text-align:center;padding:.5rem;background:#eee;border-radius:6px;cursor:pointer;}
+    .tab.active{background:var(--green);color:#fff;}
+    .video{background:#000;height:200px;border-radius:8px;margin:1rem 0;}
+    .actions{text-align:center;margin:1rem 0;}
+    .quiz-q{margin:1rem 0;}
+    .choice{background:#eee;margin:.3rem 0;padding:.5rem;border-radius:6px;cursor:pointer;}
+    .choice.correct{background:#c8e6c9;} .choice.wrong{background:#ffcdd2;}
+    .doubt-list{margin-top:1rem;} .doubt{background:#fff;border-radius:6px;padding:.5rem;
+      margin:.3rem 0;box-shadow:0 1px 3px rgba(0,0,0,.1);}
+    .doubt button{font-size:.8rem;margin-left:.5rem;}
+    /* Dark mode */
+    body.dark{--bg:#121212;--card:#1e1e1e;--text:#f1f1f1;}
+    body.dark header{background:#111;}
+    @media(max-width:560px){header h1{font-size:1.1rem;}}
+  </style>
+</head>
+<body>
+  <header>
+    <div onclick="show('dashboardView')" style="cursor:pointer;">
+      <h1 id="brand">Digital Nabha</h1>
+      <div class="sub" id="sub">Digital learning for rural students</div>
+    </div>
+    <div>
+      <button id="homeBtn" class="ghost hidden" onclick="show('dashboardView')">🏠 Home</button>
+      <select id="langTop" class="hidden"><option value="en">English</option><option value="pa">ਪੰਜਾਬੀ</option></select>
+      <button id="themeToggle" class="hidden">🌙</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Login Page -->
+    <section id="loginView">
+      <h2 id="loginTitle">Login / Signup</h2>
+      <form id="loginForm">
+        <label id="nameLabel">Name: 
+          <input type="text" id="name" required placeholder="Enter your name" lang="pa">
+        </label><br><br>
+        <label id="phoneLabel">Phone: 
+          <input type="tel" id="phone" required pattern="\d{7,15}" placeholder="9876543210">
+        </label><br><br>
+        <label id="classLabel">Select Class:
+          <select id="classSelect" required>
+            <option value="">--Choose Class--</option>
+            <option>Class 6</option><option>Class 7</option><option>Class 8</option>
+            <option>Class 9</option><option>Class 10</option>
+            <option>Class 11</option><option>Class 12</option>
+          </select>
+        </label><br><br>
+        <button type="submit" class="primary" id="btnLogin">Enter</button>
+      </form>
+      <div class="controls">
+        <label for="langLogin" id="langLabel">Language</label>
+        <select id="langLogin">
+          <option value="en">English</option>
+          <option value="pa">ਪੰਜਾਬੀ</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboardView" class="hidden">
+      <h2 id="welcomeMsg">Welcome</h2>
+      <div class="grid">
+        <div class="card" onclick="show('coursesView')"><h3 id="cardMyClasses">📘 My Classes</h3></div>
+        <div class="card" onclick="show('quizView')"><h3 id="cardQuiz">📝 Quizzes & Games</h3></div>
+        <div class="card" onclick="show('progressView')"><h3>📊 My Progress</h3></div>
+        <div class="card" onclick="show('notificationsView')"><h3>🔔 Notifications</h3></div>
+        <div class="card" onclick="show('doubtsView')"><h3 id="cardDoubts">💡 Ask a Doubt</h3></div>
+        <div class="card" onclick="show('settingsView')"><h3>⚙ Settings</h3></div>
+      </div>
+    </section>
+
+    <!-- Courses -->
+    <section id="coursesView" class="hidden">
+      <button class="ghost" onclick="show('dashboardView')" id="btnBack1">Back</button>
+      <h2 id="courseTitle">Courses</h2>
+      <div class="tabs">
+        <div class="tab active">Maths</div><div class="tab">Science</div>
+        <div class="tab">English</div><div class="tab">Punjabi</div><div class="tab">Social</div>
+      </div>
+      <div class="card" onclick="show('lessonView')"><h3 id="sampleLesson">Fractions – Class 8 Maths</h3></div>
+    </section>
+
+    <!-- Lesson -->
+    <section id="lessonView" class="hidden">
+      <button class="ghost" onclick="show('coursesView')" id="btnBack2">Back</button>
+      <h2 id="lessonTitle">Lesson Title</h2>
+      <div class="video"></div>
+      <div class="actions">
+        <button class="primary">📥 Download</button>
+        <button class="ghost" onclick="show('quizView')" id="btnTakeQuiz">Take Quiz</button>
+        <button class="ghost" onclick="show('doubtsView')" id="btnAskDoubt">Ask a Doubt</button>
+      </div>
+    </section>
+
+    <!-- Quiz -->
+    <section id="quizView" class="hidden">
+      <button class="ghost" onclick="show('dashboardView')" id="btnBack3">Back</button>
+      <h2 id="quizTitle">Quiz — Sample</h2>
+      <div class="quiz-q">
+        <p>2 + 2 = ?</p>
+        <div class="choice" onclick="mark(this,true)">4</div>
+        <div class="choice" onclick="mark(this,false)">5</div>
+      </div>
+    </section>
+
+    <!-- Doubts -->
+    <section id="doubtsView" class="hidden">
+      <button class="ghost" onclick="show('dashboardView')" id="btnBack4">Back</button>
+      <h2 id="doubtCornerTitle">Doubt Corner</h2>
+      <input id="doubtInput" placeholder="ਪੰਜਾਬੀ ਜਾਂ ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ ਆਪਣਾ ਪ੍ਰਸ਼ਨ ਲਿਖੋ...">
+      <button class="primary" onclick="addDoubt()">Post</button>
+      <div class="doubt-list" id="doubtList"></div>
+    </section>
+
+    <!-- Settings -->
+    <section id="settingsView" class="hidden">
+      <button class="ghost" onclick="show('dashboardView')">Back</button>
+      <h2>⚙ Settings</h2>
+      <label>Name: <input type="text" id="setName"></label><br><br>
+      <label>Class:
+        <select id="setClass"><option>Class 6</option><option>Class 7</option>
+          <option>Class 8</option><option>Class 9</option><option>Class 10</option>
+          <option>Class 11</option><option>Class 12</option></select>
+      </label><br><br>
+      <button class="primary" onclick="saveSettings()">Save</button>
+    </section>
+
+    <!-- Progress -->
+    <section id="progressView" class="hidden">
+      <button class="ghost" onclick="show('dashboardView')">Back</button>
+      <h2>📊 My Progress</h2>
+      <p>Stars Earned: ⭐⭐⭐</p>
+      <p>Badges: 🏅 Quick Learner, 🏆 Top Scorer</p>
+      <p>Quizzes Completed: 5</p>
+    </section>
+
+    <!-- Notifications -->
+    <section id="notificationsView" class="hidden">
+      <button class="ghost" onclick="show('dashboardView')">Back</button>
+      <h2>🔔 Notifications</h2>
+      <ul>
+        <li>New Maths Lesson Uploaded</li>
+        <li>Science Quiz Due Tomorrow</li>
+        <li>Teacher replied to your doubt</li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    const translations = {
+      en:{brand:"Digital Nabha",sub:"Digital learning for rural students",loginTitle:"Login / Signup",
+        nameLabel:"Name:",phoneLabel:"Phone:",classLabel:"Select Class:",btnLogin:"Enter",langLabel:"Language",welcome:"Welcome",
+        myClasses:"📘 My Classes",quizzes:"📝 Quizzes & Games",doubts:"💡 Ask a Doubt"},
+      pa:{brand:"ਡਿਜਿਟਲ ਨਭਾ",sub:"ਪਿੰਡਾਂ ਦੇ ਵਿਦਿਆਰਥੀਆਂ ਲਈ ਡਿਜ਼ੀਟਲ ਸਿੱਖਿਆ",loginTitle:"ਲਾਗਿਨ / ਸਾਇਨਅੱਪ",
+        nameLabel:"ਨਾਂ:",phoneLabel:"ਫੋਨ:",classLabel:"ਕਲਾਸ ਚੁਣੋ:",btnLogin:"ਦਾਖਲ ਕਰੋ",langLabel:"ਭਾਸ਼ਾ",welcome:"ਸਵਾਗਤ ਹੈ",
+        myClasses:"📘 ਮੇਰੀਆਂ ਕਲਾਸਾਂ",quizzes:"📝 ਪ੍ਰਸ਼ਨੋਤਰੀ ਅਤੇ ਖੇਡਾਂ",doubts:"💡 ਸਵਾਲ ਪੁੱਛੋ"}
+    };
+
+    function show(id){
+      document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+      document.getElementById(id).classList.remove("hidden");
+    }
+    function mark(el,correct){el.classList.add(correct?"correct":"wrong");}
+    function addDoubt(){
+      const txt=document.getElementById("doubtInput").value.trim();if(!txt)return;
+      const d=document.createElement("div");d.className="doubt";
+      d.innerHTML=`${txt}<button>Reply</button><button>Solved</button>`;
+      document.getElementById("doubtList").appendChild(d);
+      document.getElementById("doubtInput").value="";
+    }
+    function applyLang(lang){
+      const t=translations[lang];if(!t)return;
+      brand.innerText=t.brand;sub.innerText=t.sub;loginTitle.innerText=t.loginTitle;
+      nameLabel.firstChild.textContent=t.nameLabel+" ";phoneLabel.firstChild.textContent=t.phoneLabel+" ";
+      classLabel.firstChild.textContent=t.classLabel+" ";btnLogin.innerText=t.btnLogin;
+      langLabel.innerText=t.langLabel;
+      welcomeMsg.innerText=`${t.welcome} ${(localStorage.getItem("userName")||"")} (${localStorage.getItem("userClass")||""})`;
+      cardMyClasses.innerText=t.myClasses;cardQuiz.innerText=t.quizzes;cardDoubts.innerText=t.doubts;
+      localStorage.setItem("nl_lang",lang);
+    }
+    document.getElementById("loginForm").addEventListener("submit",function(e){
+      e.preventDefault();
+      const name=document.getElementById("name").value.trim();
+      const phone=document.getElementById("phone").value.trim();
+      const userClass=document.getElementById("classSelect").value;
+      if(name.length<2){alert("Enter a valid name");return;}
+      if(!/^\d{7,15}$/.test(phone)){alert("Enter valid phone");return;}
+      if(!userClass){alert("Select your class");return;}
+      localStorage.setItem("userName",name);
+      localStorage.setItem("userClass",userClass);
+      document.getElementById("langTop").classList.remove("hidden");
+      document.getElementById("themeToggle").classList.remove("hidden");
+      document.getElementById("homeBtn").classList.remove("hidden");
+      show("dashboardView");applyLang(document.getElementById("langLogin").value);
+    });
+    function saveSettings(){
+      const n=document.getElementById("setName").value;
+      const c=document.getElementById("setClass").value;
+      if(n){localStorage.setItem("userName",n);}
+      if(c){localStorage.setItem("userClass",c);}
+      alert("Settings Saved!");applyLang(localStorage.getItem("nl_lang")||"en");
+    }
+    function init(){
+      const savedLang=localStorage.getItem("nl_lang")||"en";
+      document.getElementById("langLogin").value=savedLang;
+      document.getElementById("langTop").value=savedLang;
+      applyLang(savedLang);
+      const savedUser=localStorage.getItem("userName");
+      const savedClass=localStorage.getItem("userClass");
+      if(savedUser && savedClass){
+        show("dashboardView");
+        document.getElementById("langTop").classList.remove("hidden");
+        document.getElementById("themeToggle").classList.remove("hidden");
+        document.getElementById("homeBtn").classList.remove("hidden");
+        applyLang(savedLang);
+      }
+    }
+    // Language & theme events
+    document.getElementById("langLogin").addEventListener("change",e=>applyLang(e.target.value));
+    document.getElementById("langTop").addEventListener("change",e=>applyLang(e.target.value));
+    document.getElementById("themeToggle").addEventListener("click",()=>{
+      document.body.classList.toggle("dark");
+    });
+    init();
+  </script>
+</body>
+</html>
